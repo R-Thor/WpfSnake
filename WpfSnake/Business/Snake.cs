@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using WpfSnake.Common;
 
@@ -22,11 +20,7 @@ namespace WpfSnake
         public int Age
         {
             get { return _Age; }
-            //set { _Age = value; }
         }
-
-        //internal event EventHandler ReadyToRenderEvent;
-        //delegate ReadyToRender(object sender, EventArgs e);// MoveReady();
 
         internal List<Location> Body
         {
@@ -90,22 +84,9 @@ namespace WpfSnake
 
         internal void ChangeDirection(Key k)
         {
-            //if
-            //    (
-            //        (this._Vector.Direction == Key.Up && k == Key.Down)
-            //        ||
-            //        (this._Vector.Direction == Key.Down && k == Key.Up)
-            //        ||
-            //        (this._Vector.Direction == Key.Left && k == Key.Right)
-            //        ||
-            //        (this._Vector.Direction == Key.Right && k == Key.Left)
-            //    )
-            //{
-            //    return;
-            //}
-            //this._Vector.Direction = k;
             Moves.Add(k);
         }
+
         internal void Move()
         {
             _Age++;
@@ -128,8 +109,6 @@ namespace WpfSnake
             }
 
             this.Head = VectorMove(this.Head, this.Vector.Direction);
-            //Complex r1 = Complex.Reciprocal(value);
-            //System.Math.re
             if (_Age % Properties.Settings.Default.GrowthTurnsPerOneUnit== 0)
             {
                 Grow(workinglocation);
@@ -190,6 +169,5 @@ namespace WpfSnake
             }
             return (location);
         }
-
     }
 }

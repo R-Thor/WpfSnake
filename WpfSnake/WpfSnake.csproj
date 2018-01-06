@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WpfSnake</RootNamespace>
     <AssemblyName>WpfSnake</AssemblyName>
-    <TargetFrameworkVersion>v4.0.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -67,8 +68,8 @@
     <Compile Include="Business\GameScreenMode.cs" />
     <Compile Include="Business\World.cs" />
     <Compile Include="Converter\SnakeGuidConverter.cs" />
-    <Compile Include="MainWindow4.xaml.cs">
-      <DependentUpon>MainWindow4.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Business\Move.cs" />
     <Compile Include="Presenter\GamePresenter.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Business\Snake.cs" />
     <Compile Include="Common\Vector.cs" />
     <Compile Include="Business\Bomb.cs" />
-    <Page Include="MainWindow4.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -113,13 +114,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\" />
-    <Folder Include="DataAccess\" />
-    <Folder Include="Input\" />
-    <Folder Include="Interaction\" />
-    <Folder Include="R\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\Head.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -168,9 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\Scores.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
