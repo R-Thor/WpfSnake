@@ -38,17 +38,17 @@ namespace WpfSnake
 
         //internal protected Guid _CurrentSnakeGuid = new Guid();
 
-        public static DependencyProperty CurrentSnakeGUIDProperty = DependencyProperty.Register("CurrentSnakeGUID", typeof(Guid), typeof(MainWindow4));
+        public static DependencyProperty CurrentSnakeGuidProperty = DependencyProperty.Register("CurrentSnakeGuid", typeof(Guid), typeof(MainWindow4));
 
-        public Guid CurrentSnakeGUID
+        public Guid CurrentSnakeGuid
         {
             get
             {
-                return (Guid)GetValue(CurrentSnakeGUIDProperty);
+                return (Guid) this.GetValue(CurrentSnakeGuidProperty);
             }
             set 
             {
-                SetValue(CurrentSnakeGUIDProperty, value); 
+                this.SetValue(CurrentSnakeGuidProperty, value); 
             }
         }
 
@@ -66,20 +66,20 @@ namespace WpfSnake
 
         public MainWindow4()
         {
-            CurrentSnakeGUID = new Guid();
-            InitializeComponent();
-            GameContainer = this.TargetGrid;
-            ScoreContainer = this.ScoresDataGrid;
-            HighScoreScreen = this.HighScoreGrid;
-            PauseIndicator = this.PauseLabel;
-            CurrentScore = this.ScoreLabel;
+            this.CurrentSnakeGuid = new Guid();
+            this.InitializeComponent();
+            this.GameContainer = this.TargetGrid;
+            this.ScoreContainer = this.ScoresDataGrid;
+            this.HighScoreScreen = this.HighScoreGrid;
+            this.PauseIndicator = this.PauseLabel;
+            this.CurrentScore = this.ScoreLabel;
             //MessageBox.Show("Need to fix the Record User XAML");
             
         }
 
         private void BackToGameButton_Click(object sender, RoutedEventArgs e)
         {
-            CloseHighScore(this, new EventArgs());
+            this.CloseHighScore(this, new EventArgs());
         }
     }
 }

@@ -10,116 +10,116 @@ namespace WpfSnake
         internal protected event EventHandler SnakeLoaded;
         internal Location Head { get; set; }
         internal Location Tail { get; set; }
-        private Vector _Vector = new Vector();
-        internal Vector Vector { get { return(_Vector);} }
-        private List<Location> _Body = new List<Location>();
-        private List<Key> Moves = new List<Key>();
-        internal Guid GUID = new Guid();
-        private int _Age = 0;
+        private readonly Vector _vector = new Vector();
+        internal Vector Vector { get { return(this._vector);} }
+        private List<Location> _body = new List<Location>();
+        private readonly List<Key> _moves = new List<Key>();
+        internal Guid Guid = new Guid();
+        private int _age = 0;
 
         public int Age
         {
-            get { return _Age; }
+            get { return this._age; }
         }
 
         internal List<Location> Body
         {
-            get { return _Body; }
-            set { _Body = value; }
+            get { return this._body; }
+            set { this._body = value; }
         }
         internal bool Alive { get; set; }
 
-        internal Snake(Vector v, Location initialHeadLocation, int initialLength, double GrowthRatePerTurn)
+        internal Snake(Vector v, Location initialHeadLocation, int initialLength, double growthRatePerTurn)
         {
-            this.GUID = Guid.NewGuid();
+            this.Guid = Guid.NewGuid();
             this.Alive = true;
-            Location WorkingLocation = new Location();
-            _Vector = v;
-            Head = initialHeadLocation;
-            WorkingLocation = Head;
+            Location workingLocation = new Location();
+            this._vector = v;
+            this.Head = initialHeadLocation;
+            workingLocation = this.Head;
 
             for (int x = 1; x < initialLength-1; x++)
             {
-                Location BodySegment = new Location();
+                Location bodySegment = new Location();
                 switch (v.Direction)
                 {
                     case Key.Up:
-                        BodySegment = new Location(WorkingLocation.Row + 1, WorkingLocation.Column);
+                        bodySegment = new Location(workingLocation.Row + 1, workingLocation.Column);
                         break;
                     case Key.Down:
-                        BodySegment = new Location(WorkingLocation.Row - 1, WorkingLocation.Column);
+                        bodySegment = new Location(workingLocation.Row - 1, workingLocation.Column);
                         break;
                     case Key.Left:
-                        BodySegment = new Location(WorkingLocation.Row, WorkingLocation.Column - 1);
+                        bodySegment = new Location(workingLocation.Row, workingLocation.Column - 1);
                         break;
                     case Key.Right:
-                        BodySegment = new Location(WorkingLocation.Row, WorkingLocation.Column + 1);
+                        bodySegment = new Location(workingLocation.Row, workingLocation.Column + 1);
                         break;
                 }
                
-                WorkingLocation = BodySegment;
-                _Body.Add(BodySegment);
-                if (SnakeLoaded != null)
+                workingLocation = bodySegment;
+                this._body.Add(bodySegment);
+                if (this.SnakeLoaded != null)
                 {
-                    SnakeLoaded(this, new EventArgs());
+                    this.SnakeLoaded(this, new EventArgs());
                 }
             }
             
             switch (v.Direction)
             {
                 case Key.Up:
-                    Tail = new Location(WorkingLocation.Row + 1, WorkingLocation.Column);
+                    this.Tail = new Location(workingLocation.Row + 1, workingLocation.Column);
                     break;
                 case Key.Down:
-                    Tail = new Location(WorkingLocation.Row - 1, WorkingLocation.Column);
+                    this.Tail = new Location(workingLocation.Row - 1, workingLocation.Column);
                     break;
                 case Key.Left:
-                    Tail = new Location(WorkingLocation.Row, WorkingLocation.Column - 1);
+                    this.Tail = new Location(workingLocation.Row, workingLocation.Column - 1);
                     break;
                 case Key.Right:
-                    Tail = new Location(WorkingLocation.Row, WorkingLocation.Column + 1);
+                    this.Tail = new Location(workingLocation.Row, workingLocation.Column + 1);
                     break;
             }
         }
 
         internal void ChangeDirection(Key k)
         {
-            Moves.Add(k);
+            this._moves.Add(k);
         }
 
         internal void Move()
         {
-            _Age++;
+            this._age++;
             Location workinglocation = this.Head;
-            if (Moves.Count > 0)
+            if (this._moves.Count > 0)
             {
-                for (int i = 0; i < Moves.Count; i++)
+                for (int i = 0; i < this._moves.Count; i++)
                 {
-                    if (IsMoveOption(Moves[0]))
+                    if (this.IsMoveOption(this._moves[0]))
                     {
-                        this.Vector.Direction = Moves[0];
-                        Moves.Remove(Moves[0]);
+                        this.Vector.Direction = this._moves[0];
+                        this._moves.Remove(this._moves[0]);
                         break;
                     }
                     else
                     {
-                        Moves.Remove(Moves[0]);
+                        this._moves.Remove(this._moves[0]);
                     }
                 }
             }
 
-            this.Head = VectorMove(this.Head, this.Vector.Direction);
-            if (_Age % Properties.Settings.Default.GrowthTurnsPerOneUnit== 0)
+            this.Head = this.VectorMove(this.Head, this.Vector.Direction);
+            if (this._age % Properties.Settings.Default.GrowthTurnsPerOneUnit== 0)
             {
-                Grow(workinglocation);
+                this.Grow(workinglocation);
             }
             else
             {
-                for (int x = 0; x < _Body.Count; x++)
+                for (int x = 0; x < this._body.Count; x++)
                 {
-                    Location LastLocation = this._Body[x];
-                    this._Body[x] = workinglocation;
-                    workinglocation = LastLocation;
+                    Location lastLocation = this._body[x];
+                    this._body[x] = workinglocation;
+                    workinglocation = lastLocation;
                 }
                 this.Tail = workinglocation;
             }
@@ -130,14 +130,14 @@ namespace WpfSnake
         {
             if
             (
-                (this._Vector.Direction == Key.Up && key == Key.Down)
+                (this._vector.Direction == Key.Up && key == Key.Down)
                 ||
-                (this._Vector.Direction == Key.Down && key == Key.Up)
+                (this._vector.Direction == Key.Down && key == Key.Up)
                 ||
-                (this._Vector.Direction == Key.Left && key == Key.Right)
+                (this._vector.Direction == Key.Left && key == Key.Right)
                 ||
-                (this._Vector.Direction == Key.Right && key == Key.Left)
-                || key == this._Vector.Direction
+                (this._vector.Direction == Key.Right && key == Key.Left)
+                || key == this._vector.Direction
             )
             {
                 return (false);
@@ -147,7 +147,7 @@ namespace WpfSnake
 
         private void Grow(Location workinglocation)
         {
-            _Body.Insert(0, workinglocation);
+            this._body.Insert(0, workinglocation);
         }
 
         private Location VectorMove(Location location, Key key)

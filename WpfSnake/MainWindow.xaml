@@ -13,7 +13,7 @@
                 <DataTrigger Value="True">
                     <DataTrigger.Binding>
                         <MultiBinding Converter="{StaticResource snakeGuidConverter}">
-                            <Binding ElementName="_this" Path="CurrentSnakeGUID"></Binding>
+                            <Binding ElementName="_this" Path="CurrentSnakeGuid"></Binding>
                             <Binding Path="SnakeGuid"></Binding>
                         </MultiBinding>
                     </DataTrigger.Binding>

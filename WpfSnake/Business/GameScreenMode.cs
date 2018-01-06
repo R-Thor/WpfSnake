@@ -9,29 +9,29 @@ namespace WpfSnake
     {
         internal protected enum ScreenModeType
         {
-            PLAY,
-            START,
-            HIGHSCORES,
-            RECORDHIGHSCORE
+            Play,
+            Start,
+            Highscores,
+            Recordhighscore
         }
         internal protected event EventHandler ModeChanged;
         //internal protected delegate void GameScreenModeChanged(object sender, EventArgs e);
-        private ScreenModeType _GameScreenModeType;
+        private ScreenModeType _gameScreenModeType;
 
         internal ScreenModeType GameScreenModeType
         {
-            get { return (_GameScreenModeType); } 
+            get { return (this._gameScreenModeType); } 
             set 
             {
-                ScreenModeType tempGameScreenModeType = _GameScreenModeType;
+                ScreenModeType tempGameScreenModeType = this._gameScreenModeType;
 
-                _GameScreenModeType = value;
+                this._gameScreenModeType = value;
                 
-                if (_GameScreenModeType != tempGameScreenModeType)
+                if (this._gameScreenModeType != tempGameScreenModeType)
                 {
-                    if (ModeChanged != null)
+                    if (this.ModeChanged != null)
                     {
-                        ModeChanged(this, new EventArgs());
+                        this.ModeChanged(this, new EventArgs());
                     }
                 }
 

@@ -1,103 +1,89 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Media.Imaging;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using WpfSnake.Business;
 
-namespace WpfSnake
+namespace WpfSnake.Presenter
 {
     class GamePresenter
     {
-        MainWindow4 MainWindow = new MainWindow4();
-        ScreenMode GameScreenMode = new ScreenMode();
-        private Game GAME = new Game();
-        private Grid GameGrid = new Grid();
-        private Dispatcher Dispatcher = Dispatcher.CurrentDispatcher;
+        readonly MainWindow4 _mainWindow = new MainWindow4();
+        readonly ScreenMode _gameScreenMode = new ScreenMode();
+        private readonly Game _game = new Game();
+        private readonly Grid _gameGrid = new Grid();
+        private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
         private delegate void KeyDownEventHandler(object sender, KeyEventArgs e);
-        private KeyDownEventHandler New_MainWindow_KeyDown;// = KeyInput_StartMode;
+        private KeyDownEventHandler _newMainWindowKeyDown;
         
         public GamePresenter()
         {
-
-
             #region DelegateEvents
             
-            this.MainWindow.ScoresDataGrid.ItemsSource = this.GAME.GameScores;
-            this.MainWindow.CloseHighScore += new EventHandler(MainWindow_CloseHighScore);
-            this.MainWindow.ScoreContainer.CellEditEnding += new EventHandler<DataGridCellEditEndingEventArgs>(ScoreContainer_CellEditEnding);
-            this.MainWindow.ScoreContainer.GridLinesVisibility = DataGridGridLinesVisibility.Horizontal;
-            this.MainWindow.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
-
-            this.GAME.SnakeDied += new EventHandler(GAME_SnakeDied);
-            this.GAME.BOOM += new EventHandler(GAME_BOOM);
-            this.GAME.HighScoreAchieved += new EventHandler(GAME_HighScoreAchieved);
-            this.GAME.RecordScoreAchieved += new EventHandler(GAME_RecordScoreAchieved);
-            this.GAME.MoveCompleted += new EventHandler(GAME_MoveCompleted);
-            this.GAME.SnakeGenerated += new Game.SnakeGeneratedEventHandler(GAME_SnakeGenerated);
-            //this.
-            //this.GAME.SnakeLoaded += new EventHandler(Snake_SnakeLoaded);
-
-            this.GameScreenMode.ModeChanged += new EventHandler(GameScreenMode_ModeChanged);
+            this._mainWindow.ScoresDataGrid.ItemsSource = this._game.GameScores;
+            this._mainWindow.CloseHighScore += this.MainWindow_CloseHighScore;
+            this._mainWindow.ScoreContainer.CellEditEnding += this.ScoreContainer_CellEditEnding;
+            this._mainWindow.ScoreContainer.GridLinesVisibility = DataGridGridLinesVisibility.Horizontal;
+            this._mainWindow.KeyDown += this.MainWindow_KeyDown;
+            this._game.SnakeDied += this.GAME_SnakeDied;
+            this._game.Boom += this.GAME_BOOM;
+            this._game.HighScoreAchieved += this.GAME_HighScoreAchieved;
+            this._game.RecordScoreAchieved += this.GAME_RecordScoreAchieved;
+            this._game.MoveCompleted += this.GAME_MoveCompleted;
+            this._game.SnakeGenerated += this.GAME_SnakeGenerated;
+            this._gameScreenMode.ModeChanged += this.GameScreenMode_ModeChanged;
 
             #endregion DelegateEvents
             
             #region Initializations
 
-            LoadScores();
-            GenerateWorld(Properties.Settings.Default.WorldColumns, Properties.Settings.Default.WorldRows, Properties.Settings.Default.WorldCellSize);
-            GameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.HIGHSCORES;
-            MainWindow.Show();
+            this.LoadScores();
+            this.GenerateWorld(Properties.Settings.Default.WorldColumns, Properties.Settings.Default.WorldRows, Properties.Settings.Default.WorldCellSize);
+            this._gameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.Highscores;
+            this._mainWindow.Show();
 
             #endregion Initializations
-
         }
 
         void GAME_SnakeGenerated(object sender, Game.SnakeGeneratedEventArgs e)
         {
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.CurrentSnakeGUID = e.SnakeGUID; }), DispatcherPriority.Send, null);
-            //this.MainWindow.CurrentSnakeGUID = e.SnakeGUID;
-            //string x = this.MainWindow.CurrentSnakeGUIDString;
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.CurrentSnakeGuid = e.SnakeGuid; }), DispatcherPriority.Send, null);
         }
 
         void GAME_BOOM(object sender, EventArgs e)
         {
-            DrawBombs();
+            this.DrawBombs();
         }
-
-
 
         private void StartRestartGame()
         {
-            if (GAME.IsPaused)
+            if (this._game.IsPaused)
             {
-                GAME.IsPaused = false;
+                this._game.IsPaused = false;
             }
             else
             {
-                GAME.Start();
+                this._game.Start();
             }
-            
         }
 
-        private void GenerateWorld(int Columns, int Rows, int Size)
+        private void GenerateWorld(int columns, int rows, int size)
         {
-            GAME.GameWorld = new World(Columns, Rows, Size);
+            this._game.GameWorld = new World(columns, rows, size);
 
-            for (int iColumns = 0; iColumns < Columns; iColumns++)
+            for (int iColumns = 0; iColumns < columns; iColumns++)
             {
-                this.GameGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(Size) });
+                this._gameGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(size) });
             }
-            for (int iRows = 0; iRows < Rows; iRows++)
+            for (int iRows = 0; iRows < rows; iRows++)
             {
-                this.GameGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(Size) });
+                this._gameGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(size) });
             }
-            //this.MainWindow.GameCanvas.Children.Remove(
-            this.MainWindow.TargetGrid.Children.Add(this.GameGrid);
+
+            this._mainWindow.TargetGrid.Children.Add(this._gameGrid);
         }
 
         #region GameModeControl
@@ -107,80 +93,69 @@ namespace WpfSnake
 
         void GameScreenMode_ModeChanged(object sender, EventArgs e)
         {
-            switch (GameScreenMode.GameScreenModeType)
+            switch (this._gameScreenMode.GameScreenModeType)
             {
-                case ScreenMode.ScreenModeType.START:
-                    ConfigueSTARTMode();
+                case ScreenMode.ScreenModeType.Start:
+                    this.ConfigureStartMode();
                     break;
-                case ScreenMode.ScreenModeType.PLAY:
+                case ScreenMode.ScreenModeType.Play:
 
-                    ConfiguePLAYMode();
+                    this.ConfigurePlayMode();
                     break;
-                case ScreenMode.ScreenModeType.HIGHSCORES:
-                    ConfigueHIGHSCORESMode();
-                    //New_MainWindow_KeyDown = this.KeyInput_ScoreMode;
+                case ScreenMode.ScreenModeType.Highscores:
+                    this.ConfigureHighscoresMode();
                     break;
-                case ScreenMode.ScreenModeType.RECORDHIGHSCORE:
-                    ConfigueRECORDHIGHSCOREMode();
-                    //New_MainWindow_KeyDown = this.KeyInput_ScoreMode;
+                case ScreenMode.ScreenModeType.Recordhighscore:
+                    this.ConfigureRecordhighscoreMode();
                     break;
             }
 
         }
-        private void ConfigueSTARTMode()
+
+        private void ConfigureStartMode()
         {
-            New_MainWindow_KeyDown = this.KeyInput_StartMode;
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.ScoresDataGrid.IsEnabled = false; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.GameGrid.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.HighScoreScreen.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.PauseIndicator.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
+            this._newMainWindowKeyDown = this.KeyInput_StartMode;
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.ScoresDataGrid.IsEnabled = false; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._gameGrid.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.HighScoreScreen.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.PauseIndicator.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
         }
         void MainWindow_CloseHighScore(object sender, EventArgs e)
         {
-            GameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.START;
+            this._gameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.Start;
         }
         void GAME_RecordScoreAchieved(object sender, EventArgs e)
         {
-            GameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.RECORDHIGHSCORE;
+            this._gameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.Recordhighscore;
         }
-        private void ConfigueRECORDHIGHSCOREMode()
+        private void ConfigureRecordhighscoreMode()
         {
-            New_MainWindow_KeyDown = this.KeyInput_ScoreMode;
-            //this.MainWindow.ScoresDataGrid.IsEnabled = true;
-            PersistScore(new Score("Player", this.GAME.Snake.Age, this.GAME.Snake.GUID));
-
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.ScoresDataGrid.IsEnabled = true; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.ScoresDataGrid.IsReadOnly = true; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.GameGrid.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.HighScoreScreen.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.PauseIndicator.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
-
+            this._newMainWindowKeyDown = this.KeyInput_ScoreMode;
+            this.PersistScore(new Score("Player", this._game.Snake.Age, this._game.Snake.Guid));
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.ScoresDataGrid.IsEnabled = true; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.ScoresDataGrid.IsReadOnly = true; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._gameGrid.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.HighScoreScreen.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.PauseIndicator.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
         }
 
-        private void ConfigueHIGHSCORESMode()
+        private void ConfigureHighscoresMode()
         {
-            New_MainWindow_KeyDown = this.KeyInput_StartMode;
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.ScoresDataGrid.IsEnabled = true; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.ScoresDataGrid.IsReadOnly = true; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.GameGrid.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.HighScoreScreen.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.PauseIndicator.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
+            this._newMainWindowKeyDown = this.KeyInput_StartMode;
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.ScoresDataGrid.IsEnabled = true; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.ScoresDataGrid.IsReadOnly = true; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._gameGrid.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.HighScoreScreen.Visibility = Visibility.Visible; }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.PauseIndicator.Visibility = Visibility.Hidden; }), DispatcherPriority.Send, null);
         }
 
-        //private void ConfigueRECORDSCOREMode()
-        //{
-        //}
-
-        private void ConfiguePLAYMode()
+        private void ConfigurePlayMode()
         {
-            New_MainWindow_KeyDown = this.KeyInput_PlayMode;
-            this.GameGrid.Visibility = Visibility.Visible;
-            this.GameGrid.Background = Brushes.White;
-            //this.MainWindow.PlayerName.Visibility = Visibility.Hidden;
-            this.MainWindow.PauseIndicator.Visibility = Visibility.Hidden;
+            this._newMainWindowKeyDown = this.KeyInput_PlayMode;
+            this._gameGrid.Visibility = Visibility.Visible;
+            this._gameGrid.Background = Brushes.White;
+            this._mainWindow.PauseIndicator.Visibility = Visibility.Hidden;
         }
-
-
 
         #endregion GameModeControl
 
@@ -188,13 +163,13 @@ namespace WpfSnake
 
         void KeyInput_StartMode(object sender, KeyEventArgs e)
         {
-            GameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.PLAY;
-            StartRestartGame();
+            this._gameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.Play;
+            this.StartRestartGame();
 
         }
         void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            New_MainWindow_KeyDown(sender, e);
+            this._newMainWindowKeyDown(sender, e);
         }
         void KeyInput_PlayMode(object sender, KeyEventArgs e)
         {
@@ -204,14 +179,11 @@ namespace WpfSnake
                 case Key.Down:
                 case Key.Left:
                 case Key.Right:
-                    GAME.Snake.ChangeDirection(e.Key);
+                    this._game.Snake.ChangeDirection(e.Key);
                     break;
                 case Key.P:
-                    GAME.Snake.ChangeDirection(e.Key);
+                    this._game.Snake.ChangeDirection(e.Key);
                     break;
-                //default:
-                //    GAME.Unpause();
-                //break;
             }
         }
 
@@ -221,41 +193,31 @@ namespace WpfSnake
 
         #region GAMEEventHandleing
 
-        void Snake_SnakeLoaded(object sender, EventArgs e)
-        {
-            this.MainWindow.CurrentSnakeGUID = ((Snake)sender).GUID;
-        }
-
         void GAME_HighScoreAchieved(object sender, EventArgs e)
         {
-            //GameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.HIGHSCORES;
-            this.Dispatcher.Invoke(new Action(delegate { MainWindow.HighScoreLabel.Content = this.GAME.Snake.Age.ToString().PadLeft(7, "0".ToCharArray()[0]); }), DispatcherPriority.Send, null);
-
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.HighScoreLabel.Content = this._game.Snake.Age.ToString().PadLeft(7, "0".ToCharArray()[0]); }), DispatcherPriority.Send, null);
         }
-
 
         void GAME_SnakeDied(object sender, EventArgs e)
         {
-            this.Dispatcher.Invoke(new Action(delegate { this.GameGrid.Background = Brushes.Red; }), DispatcherPriority.Send, null);
-            if (this.GAME.Snake.Age > this.GAME.GameScores[this.GAME.GameScores.Count - 1].PlayerScore)
+            this._dispatcher.Invoke(new Action(delegate { this._gameGrid.Background = Brushes.Red; }), DispatcherPriority.Send, null);
+
+            if (this._game.Snake.Age > this._game.GameScores[this._game.GameScores.Count - 1].PlayerScore)
             {
-                GameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.RECORDHIGHSCORE;
+                this._gameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.Recordhighscore;
             }
             else
             {
-                GameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.HIGHSCORES;
+                this._gameScreenMode.GameScreenModeType = ScreenMode.ScreenModeType.Highscores;
             }
-            //
-            //throw new NotImplementedException();
         }
 
         void GAME_MoveCompleted(object sender, EventArgs e)
         {
-            this.GameGrid.Children.Clear();
-            DrawSnake();
-            DrawBombs();
-            UpdateScore();
-            //throw new NotImplementedException();
+            this._gameGrid.Children.Clear();
+            this.DrawSnake();
+            this.DrawBombs();
+            this.UpdateScore();
         }
 
         #endregion GAMEEventHandleing
@@ -264,29 +226,26 @@ namespace WpfSnake
 
         void ScoreContainer_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            Scores.SerializeData(this.GAME.GameScores);
-            //this.MainWindow.ScoreContainer.
+            Scores.SerializeData(this._game.GameScores);
         }
+
         private void UpdateScore()
         {
-            MainWindow.CurrentScore.Content = this.GAME.Snake.Age.ToString().PadLeft(7, "0".ToCharArray()[0]);
+            this._mainWindow.CurrentScore.Content = this._game.Snake.Age.ToString().PadLeft(7, "0".ToCharArray()[0]);
         }
-        internal void LoadScores()
+
+        private void LoadScores()
         {
-            this.Dispatcher.Invoke(new Action(delegate { this.MainWindow.ScoresDataGrid.Items.Refresh(); }), DispatcherPriority.Send, null);
+            this._dispatcher.Invoke(new Action(delegate { this._mainWindow.ScoresDataGrid.Items.Refresh(); }), DispatcherPriority.Send, null);
             
-            MainWindow.HighScoreLabel.Content = (this.GAME.GameScores.Count > 0 ? this.GAME.GameScores[0].PlayerScore : 0).ToString().PadLeft(7, "0".ToCharArray()[0]);
+            this._mainWindow.HighScoreLabel.Content = (this._game.GameScores.Count > 0 ? this._game.GameScores[0].PlayerScore : 0).ToString().PadLeft(7, "0".ToCharArray()[0]);
         }
         private void PersistScore(Score score)
         {
-            this.GAME.GameScores.Add(score);
-            Scores.SerializeData(this.GAME.GameScores);
+            this._game.GameScores.Add(score);
+            Scores.SerializeData(this._game.GameScores);
             this.LoadScores();
         }
-        //void ScoresDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        //{
-
-        //}
 
         #endregion ScoreManagement
 
@@ -294,179 +253,143 @@ namespace WpfSnake
 
         private void DrawBombs()
         {
-            for (int i = 0; i < this.GAME.Bombs.Count; i++)
+            for (int i = 0; i < this._game.Bombs.Count; i++)
             {
-                Image BombImage = new Image();
-                if (!this.GAME.Bombs[i].IsBoomBoomTime(this.GAME.Snake.Age))
+                Image bombImage = new Image();
+                if (!this._game.Bombs[i].IsBoomBoomTime(this._game.Snake.Age))
                 {
-                    if (this.GAME.Snake.Age % 3 == 0)
+                    if (this._game.Snake.Age % 3 == 0)
                     {
-                        BombImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BombLeftSparkImageURI, UriKind.Relative));
-                        //BombImage.Source = new BitmapImage(new Uri(@".\Resources\BombLeftSpark.png", UriKind.Relative));
-                        //BombImage.Source = BitmapSources["BombLeftSpark"];
-                        //BombImage.Source = new BitmapImage(new Uri(@"C:\Users\BruteF0rce\Documents\Visual Studio 2010\Projects\WpfSnake\WpfSnake\Resources\BombLeftSpark.png", UriKind.Absolute));
+                        bombImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BombLeftSparkImageURI, UriKind.Relative));
                     }
                     else
                     {
-                        BombImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BombRightSparkImageURI, UriKind.Relative));
-                        //BombImage.Source = new BitmapImage(new Uri(@".\Resources\BombRightSpark.png", UriKind.Relative));
-                        //BombImage.Source = BitmapSources["BombRightSpark"];
-
-                        //BombImage.Source = new BitmapImage(new Uri(@"C:\Users\BruteF0rce\Documents\Visual Studio 2010\Projects\WpfSnake\WpfSnake\Resources\BombRightSpark.png", UriKind.Absolute));
+                        bombImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BombRightSparkImageURI, UriKind.Relative));
                     }
                 }
                 else
                 {
-                    BombImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BOOMImageURI, UriKind.Relative));
-                    //BombImage.Source = new BitmapImage(new Uri(@".\Resources\BOOM.png", UriKind.Relative));
-                    //BombImage.Source = BitmapSources["BOOM"];
-                    //BombImage.Source = new BitmapImage(new Uri(@"C:\Users\BruteF0rce\Documents\Visual Studio 2010\Projects\WpfSnake\WpfSnake\Resources\BOOM.png", UriKind.Absolute));
+                    bombImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BOOMImageURI, UriKind.Relative));
                 }
 
-                BombImage.Width = BombImage.Source.Width;
-                BombImage.Height = BombImage.Source.Height;
-                this.GameGrid.Children.Add(BombImage);
-
-                Grid.SetColumn(BombImage, this.GAME.Bombs[i].Location.Column);
-                Grid.SetRow(BombImage, this.GAME.Bombs[i].Location.Row);
+                bombImage.Width = bombImage.Source.Width;
+                bombImage.Height = bombImage.Source.Height;
+                this._gameGrid.Children.Add(bombImage);
+                Grid.SetColumn(bombImage, this._game.Bombs[i].Location.Column);
+                Grid.SetRow(bombImage, this._game.Bombs[i].Location.Row);
             }
         }
 
         private void DrawSnake()
         {
-            Image HeadImage = new Image();
-            HeadImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.HeadImageURI, UriKind.Relative));
-            HeadImage.Width = HeadImage.Source.Width;
-            HeadImage.Height = HeadImage.Source.Height;
-            GameGrid.Children.Add(HeadImage);
-            switch (GAME.Snake.Vector.Direction)
+            Image headImage = new Image();
+            headImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.HeadImageURI, UriKind.Relative));
+            headImage.Width = headImage.Source.Width;
+            headImage.Height = headImage.Source.Height;
+            this._gameGrid.Children.Add(headImage);
+
+            switch (this._game.Snake.Vector.Direction)
             {
                 case Key.Up:
-                    HeadImage.LayoutTransform = new RotateTransform(0);
+                    headImage.LayoutTransform = new RotateTransform(0);
                     break;
 
                 case Key.Right:
-                    HeadImage.LayoutTransform = new RotateTransform(90);
+                    headImage.LayoutTransform = new RotateTransform(90);
                     break;
 
                 case Key.Down:
-                    HeadImage.LayoutTransform = new RotateTransform(180);
+                    headImage.LayoutTransform = new RotateTransform(180);
                     break;
 
                 case Key.Left:
-                    HeadImage.LayoutTransform = new RotateTransform(270);
+                    headImage.LayoutTransform = new RotateTransform(270);
                     break;
-
             }
-            Grid.SetColumn(HeadImage, GAME.Snake.Head.Column);
-            Grid.SetRow(HeadImage, GAME.Snake.Head.Row);
 
-            for (int iBody = 0; iBody < GAME.Snake.Body.Count; iBody++)
+            Grid.SetColumn(headImage, this._game.Snake.Head.Column);
+            Grid.SetRow(headImage, this._game.Snake.Head.Row);
+
+            for (int iBody = 0; iBody < this._game.Snake.Body.Count; iBody++)
             {
-                Image BodyImage = new Image();
-                //BodyImage.Source = new BitmapImage(new Uri(@"C:\Users\BruteF0rce\Documents\Visual Studio 2010\Projects\WpfSnake\WpfSnake\Resources\Body.png", UriKind.Absolute));
-                //BodyImage.Source = BitmapSources["Body"];
-                BodyImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BodyImageURI, UriKind.Relative));
-                BodyImage.Width = BodyImage.Source.Width;
-                BodyImage.Height = BodyImage.Source.Height;
-                GameGrid.Children.Add(BodyImage);
-                Grid.SetColumn(BodyImage, GAME.Snake.Body[iBody].Column);
-                Grid.SetRow(BodyImage, GAME.Snake.Body[iBody].Row);
-
+                Image bodyImage = new Image();
+                bodyImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.BodyImageURI, UriKind.Relative));
+                bodyImage.Width = bodyImage.Source.Width;
+                bodyImage.Height = bodyImage.Source.Height;
+                this._gameGrid.Children.Add(bodyImage);
+                Grid.SetColumn
+                (
+                    bodyImage, this._game.Snake.Body[iBody]
+                        .Column);
+                Grid.SetRow
+                (
+                    bodyImage, this._game.Snake.Body[iBody]
+                        .Row);
             }
-            Image TailImage = new Image();
-            if (GAME.Snake.Age % 2 == 0)
+
+            Image tailImage = new Image();
+            if (this._game.Snake.Age % 2 == 0)
             {
-                //TailImage.Source = new BitmapImage(new Uri(@"C:\Users\BruteF0rce\Documents\Visual Studio 2010\Projects\WpfSnake\WpfSnake\Resources\TailZig.png", UriKind.Absolute));
-                //TailImage.Source = BitmapSources["TailZig"];
-                TailImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.TailZigImageURI, UriKind.Relative));
+                tailImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.TailZigImageURI, UriKind.Relative));
             }
             else
             {
-                //TailImage.Source = BitmapSources["TailZag"];
-                //TailImage.Source = new BitmapImage(new Uri(@"C:\Users\BruteF0rce\Documents\Visual Studio 2010\Projects\WpfSnake\WpfSnake\Resources\TailZag.png", UriKind.Absolute));
-                TailImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.TailZagImageURI, UriKind.Relative));
+                tailImage.Source = new BitmapImage(new Uri(Properties.Settings.Default.TailZagImageURI, UriKind.Relative));
             }
 
-
-            TailImage.Width = TailImage.Source.Width;
-            TailImage.Height = TailImage.Source.Height;
-            GameGrid.Children.Add(TailImage);
-            Grid.SetColumn(TailImage, GAME.Snake.Tail.Column);
-            Grid.SetRow(TailImage, GAME.Snake.Tail.Row);
-
+            tailImage.Width = tailImage.Source.Width;
+            tailImage.Height = tailImage.Source.Height;
+            this._gameGrid.Children.Add(tailImage);
+            Grid.SetColumn(tailImage, this._game.Snake.Tail.Column);
+            Grid.SetRow(tailImage, this._game.Snake.Tail.Row);
             Key lastBodyPartVector = new Key();
 
-            if (GAME.Snake.Body[GAME.Snake.Body.Count - 1].Column > GAME.Snake.Tail.Column)
+            if (this._game.Snake.Body[this._game.Snake.Body.Count - 1]
+                    .Column > this._game.Snake.Tail.Column)
             {
                 lastBodyPartVector = Key.Right;
             }
 
-            if (GAME.Snake.Body[GAME.Snake.Body.Count - 1].Row > GAME.Snake.Tail.Row)
+            if (this._game.Snake.Body[this._game.Snake.Body.Count - 1]
+                    .Row > this._game.Snake.Tail.Row)
             {
                 lastBodyPartVector = Key.Down;
             }
 
-            if (GAME.Snake.Body[GAME.Snake.Body.Count - 1].Row < GAME.Snake.Tail.Row)
+            if (this._game.Snake.Body[this._game.Snake.Body.Count - 1]
+                    .Row < this._game.Snake.Tail.Row)
             {
                 lastBodyPartVector = Key.Up;
             }
 
-            if (GAME.Snake.Body[GAME.Snake.Body.Count - 1].Column < GAME.Snake.Tail.Column)
+            if (this._game.Snake.Body[this._game.Snake.Body.Count - 1]
+                    .Column < this._game.Snake.Tail.Column)
             {
                 lastBodyPartVector = Key.Left;
             }
 
-            {//Transform Tail
-                switch (lastBodyPartVector)
-                {
-                    case Key.Up:
-                        TailImage.LayoutTransform = new RotateTransform(0);
-                        break;
+            //Transform Tail
+            switch (lastBodyPartVector)
+            {
+                case Key.Up:
+                    tailImage.LayoutTransform = new RotateTransform(0);
+                    break;
 
-                    case Key.Right:
-                        TailImage.LayoutTransform = new RotateTransform(90);
-                        break;
+                case Key.Right:
+                    tailImage.LayoutTransform = new RotateTransform(90);
+                    break;
 
-                    case Key.Down:
-                        TailImage.LayoutTransform = new RotateTransform(180);
-                        break;
+                case Key.Down:
+                    tailImage.LayoutTransform = new RotateTransform(180);
+                    break;
 
-                    case Key.Left:
-                        TailImage.LayoutTransform = new RotateTransform(270);
-                        break;
-
-                }
+                case Key.Left:
+                    tailImage.LayoutTransform = new RotateTransform(270);
+                    break;
 
             }
-
         }
 
         #endregion Drawing
-
-
-
-       
-
-       
-
-        //internal void PlayerInput(Key KeyInput)
-        //{
-        //    switch (KeyInput)
-        //    {
-        //        case Key.Up:
-        //        case Key.Down:
-        //        case Key.Left:
-        //        case Key.Right:
-        //            Game.Snake.ChangeDirection(KeyInput);
-        //            break;
-        //        case Key.P:
-        //            Game.Snake.ChangeDirection(KeyInput);
-        //            break;
-        //        default:
-        //            Game.Unpause();
-        //            break;
-        //    }
-        //}
     }
 }

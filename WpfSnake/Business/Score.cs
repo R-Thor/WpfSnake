@@ -12,43 +12,43 @@ namespace WpfSnake
 {
     public class Score
     {
-        private string _PlayerName = string.Empty;
+        private string _playerName = string.Empty;
         public string PlayerName
         {
-            get { return _PlayerName; }
-            set { _PlayerName = value; }
+            get { return this._playerName; }
+            set { this._playerName = value; }
         }
-        private int _PlayerScore = 0;
+        private int _playerScore = 0;
         public int PlayerScore
         {
-            get { return _PlayerScore; }
-            set { _PlayerScore = value; }
+            get { return this._playerScore; }
+            set { this._playerScore = value; }
         }
-        private DateTime _Date = new DateTime();
+        private DateTime _date = new DateTime();
         public DateTime Date
         {
-            get { return _Date; }
-            set { _Date = value; }
+            get { return this._date; }
+            set { this._date = value; }
         }
         public Score(){}
-        public Score(string Player, int Score, Guid SnakeGuid)
+        public Score(string player, int score, Guid snakeGuid)
         {
-            this._Date = DateTime.Now;
-            this._PlayerName = Player;
-            this._PlayerScore = Score;
-            this._SnakeGuid = SnakeGuid;
+            this._date = DateTime.Now;
+            this._playerName = player;
+            this._playerScore = score;
+            this._snakeGuid = snakeGuid;
         }
-        private bool _IsLastScoreMade = false;
+        private bool _isLastScoreMade = false;
         public bool IsLastScoreMade
         {
-            get { return _IsLastScoreMade; }
-            set { _IsLastScoreMade = value; }
+            get { return this._isLastScoreMade; }
+            set { this._isLastScoreMade = value; }
         }
-        private Guid _SnakeGuid = new Guid();
+        private Guid _snakeGuid = new Guid();
         public Guid SnakeGuid
         {
-            get { return _SnakeGuid; }
-            set { _SnakeGuid = value; }
+            get { return this._snakeGuid; }
+            set { this._snakeGuid = value; }
         }
         //private bool _CurrentScore = false;
         //public bool CurrentScore

@@ -15,8 +15,8 @@ namespace WpfSnake.Common
         }
         internal Location(int row, int col)
         {
-            Row = row;
-            Column = col;
+            this.Row = row;
+            this.Column = col;
         }
     }
 }

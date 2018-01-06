@@ -1,36 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WpfSnake.Common;
+﻿using WpfSnake.Common;
 
-namespace WpfSnake
+namespace WpfSnake.Business
 {
     class Bomb
     {
-        //public bool BOOM { get; set; }
-        private int Timer = 0;
-        private int StartTime;
+        private readonly int _timer = 0;
+        private readonly int _startTime;
         public Location Location { get; set; }
-        //private bool _BOOM = false;
 
-        //public bool BOOM
-        //{
-        //    get { return _BOOM; }
-        //    set { _BOOM = value; }
-        //}
-
-        public Bomb(int Time, int Timer)
+        public Bomb(int time, int timer)
         {
-            this.StartTime = Time;
-            this.Timer = Timer;
+            this._startTime = time;
+            this._timer = timer;
         }
-        internal bool IsBoomBoomTime(int Time)
+        internal bool IsBoomBoomTime(int time)
         {
-            if(Time >= (Timer+StartTime))
+            if (time >= (this._timer + this._startTime))
             {
-                return(true);
+                return (true);
             }
+
             return(false);
         }
     }

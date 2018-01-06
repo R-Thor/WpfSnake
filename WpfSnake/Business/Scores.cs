@@ -16,21 +16,21 @@ namespace WpfSnake
         {
             
         }
-        public static Scores Clone(Scores Scores)
+        public static Scores Clone(Scores scores)
         {
-            Scores CloneScores = new Scores();
-            foreach (Score s in Scores)
+            Scores cloneScores = new Scores();
+            foreach (Score s in scores)
             {
-                CloneScores.Add(s);
+                cloneScores.Add(s);
             }
-            return (CloneScores);
+            return (cloneScores);
         }
-        public new void Add(Score Score)
+        public new void Add(Score score)
         {
             //Score.IsLastScoreMade = true;
-            base.Add(Score);
+            base.Add(score);
 
-            this.Sort(new Comparison<Score>(Scores.Compare));
+            this.Sort(Compare);
 
             foreach (Score s in this)
             {
@@ -53,22 +53,22 @@ namespace WpfSnake
             ].IsLastScoreMade = true;
             
         }
-        internal static Scores SortByDate(Scores Scores)
+        internal static Scores SortByDate(Scores scores)
         {
-            Scores.Sort(CompareDate);
-            return(Scores);
+            scores.Sort(CompareDate);
+            return(scores);
         }
-        internal static Scores SortByDateDesc(Scores Scores)
+        internal static Scores SortByDateDesc(Scores scores)
         {
-            Scores.Sort(CompareDate);
-            Scores.Reverse();
-            return (Scores);
+            scores.Sort(CompareDate);
+            scores.Reverse();
+            return (scores);
         }
-        internal static int CompareDate(Score A, Score B)
+        internal static int CompareDate(Score a, Score b)
         {
-            if (A.Date == new DateTime())
+            if (a.Date == new DateTime())
             {
-                if (B.Date == new DateTime())
+                if (b.Date == new DateTime())
                 {
                     return 0;
                 }
@@ -79,19 +79,19 @@ namespace WpfSnake
             }
             else
             {
-                if (B.Date == new DateTime())
+                if (b.Date == new DateTime())
                 {
                     return -1;
                 }
                 else
                 {
-                    if (A.Date > B.Date)
+                    if (a.Date > b.Date)
                     {
                         return (-1);
                     }
                     else
                     {
-                        if (A.Date < B.Date)
+                        if (a.Date < b.Date)
                         {
                             return (1);
                         }
@@ -100,11 +100,11 @@ namespace WpfSnake
             }
             return (0);
         }
-        internal static int Compare(Score A, Score B)
+        internal static int Compare(Score a, Score b)
         {
-            if (A == null)
+            if (a == null)
             {
-                if (B == null)
+                if (b == null)
                 {
                     return 0;
                 }
@@ -115,32 +115,32 @@ namespace WpfSnake
             }
             else
             {
-                if (B == null)
+                if (b == null)
                 {
                     return -1;
                 }
                 else
                 {
-                    if (A.PlayerScore > B.PlayerScore)
+                    if (a.PlayerScore > b.PlayerScore)
                     {
                         return (-1);
                     }
                     else
                     {
-                        if (A.PlayerScore < B.PlayerScore)
+                        if (a.PlayerScore < b.PlayerScore)
                         {
                             return (1);
                         }
                     }
                 }
             }
-            if (A.PlayerScore == B.PlayerScore)
+            if (a.PlayerScore == b.PlayerScore)
             {
-                if (A.Date < B.Date)
+                if (a.Date < b.Date)
                 {
                     return (-1);
                 }
-                if (A.Date > B.Date)
+                if (a.Date > b.Date)
                 {
                     return (1);
                 }
@@ -165,27 +165,27 @@ namespace WpfSnake
         //    _Scores = (Scores)mySerializer.Deserialize(myFileStream);
         //    myFileStream.Close();
         //}
-        static public void SerializeData(Scores _Scores)
+        static public void SerializeData(Scores scores)
         {
-            if (_Scores.Count > 10)
+            if (scores.Count > 10)
             {
-                _Scores.RemoveRange(10, _Scores.Count - 10);
+                scores.RemoveRange(10, scores.Count - 10);
             }
             XmlSerializer mySerializer = new XmlSerializer(typeof(Scores));
             //StreamWriter myWriter = new StreamWriter(Properties.Settings.Default.ScoresFile);
             MemoryStream mem = new MemoryStream();
-            mySerializer.Serialize(mem, _Scores);
+            mySerializer.Serialize(mem, scores);
             Properties.Settings.Default.HighScores = Encoding.ASCII.GetString(mem.ToArray());
             Properties.Settings.Default.Save();
             //mySerializer.Serialize(myWriter, _Scores);
             //myWriter.Close();
         }
-        static public void DeserializeFromXML(ref Scores _Scores)
+        static public void DeserializeFromXml(ref Scores scores)
         {
             XmlSerializer mySerializer = new XmlSerializer(typeof(Scores));
             //FileStream myFileStream = new FileStream(Properties.Settings.Default.ScoresFile, FileMode.Open);
             MemoryStream mem = new MemoryStream(Encoding.ASCII.GetBytes(Properties.Settings.Default.HighScores.ToCharArray()));
-            _Scores = (Scores)mySerializer.Deserialize(mem);
+            scores = (Scores)mySerializer.Deserialize(mem);
         }
     }
 	

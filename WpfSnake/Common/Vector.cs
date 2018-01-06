@@ -8,19 +8,19 @@ namespace WpfSnake.Common
 {
     internal class Vector
     {
-        private double _CellsPerSecond;
+        private double _cellsPerSecond;
 
         public double CellsPerSecond
         {
-            get { return _CellsPerSecond; }
-            set { _CellsPerSecond = value; }
+            get { return this._cellsPerSecond; }
+            set { this._cellsPerSecond = value; }
         }
-        private Key _Direction;
+        private Key _direction;
 
         public Key Direction
         {
-            get { return _Direction; }
-            set { _Direction = value; }
+            get { return this._direction; }
+            set { this._direction = value; }
         }
         public Vector()
         {
@@ -28,8 +28,8 @@ namespace WpfSnake.Common
         }
         public Vector(double cellsPerSecond,Key direction)
         {
-            _CellsPerSecond = cellsPerSecond;
-            _Direction = direction;
+            this._cellsPerSecond = cellsPerSecond;
+            this._direction = direction;
         }
     }
 }
