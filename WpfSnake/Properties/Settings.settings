@@ -1,0 +1,102 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WpfSnake.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ScoresFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Resources\Scores.xml</Value>
+    </Setting>
+    <Setting Name="WorldColumns" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="WorldRows" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="WorldCellSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="HeadImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\Head.png</Value>
+    </Setting>
+    <Setting Name="BodyImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\Body.png</Value>
+    </Setting>
+    <Setting Name="TailZigImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\TailZig.png</Value>
+    </Setting>
+    <Setting Name="TailZagImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\TailZag.png</Value>
+    </Setting>
+    <Setting Name="BombLeftSparkImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\BombLeftSpark.png</Value>
+    </Setting>
+    <Setting Name="BombRightSparkImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\BombRightSpark.png</Value>
+    </Setting>
+    <Setting Name="BOOMImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\BOOM.png</Value>
+    </Setting>
+    <Setting Name="TailImageURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Resources\Tail.png</Value>
+    </Setting>
+    <Setting Name="BombTimer" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="HighScores" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfScore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;Player 1&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;1000&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-05T16:15:07.5260708-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;Art DoooD&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;900&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-09T23:55:32.9736819-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;Where is this one&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;154&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-11T19:47:20.2132059-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;Player 1&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;17&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-11T00:49:04.8819364-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;Player 1&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;8&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-11T19:46:37.4467598-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;test&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;8&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-11T00:50:48.9108865-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;Player 1&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;8&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-11T00:50:31.9519165-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+  &lt;Score&gt;
+    &lt;PlayerName&gt;Player 1&lt;/PlayerName&gt;
+    &lt;PlayerScore&gt;8&lt;/PlayerScore&gt;
+    &lt;Date&gt;2012-08-11T00:48:47.6579512-04:00&lt;/Date&gt;
+  &lt;/Score&gt;
+&lt;/ArrayOfScore&gt;</Value>
+    </Setting>
+    <Setting Name="BombsLaidRate" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="BombGenerationRateMax" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">40</Value>
+    </Setting>
+    <Setting Name="TurnTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="GrowthTurnsPerOneUnit" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

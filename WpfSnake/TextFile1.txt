@@ -1,0 +1,1 @@
+﻿Error	1	'WpfSnake.MainWindow4' does not contain a definition for 'Button_Click' and no extension method 'Button_Click' accepting a first argument of type 'WpfSnake.MainWindow4' could be found (are you missing a using directive or an assembly reference?)	C:\Users\BruteF0rce\documents\visual studio 2010\Projects\WpfSnake\WpfSnake\MainWindow4.xaml	21	108	WpfSnake

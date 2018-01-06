@@ -1,0 +1,152 @@
+﻿<Window x:Class="WpfSnake.MainWindow4"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Converter="clr-namespace:WpfSnake.Converter"
+        Title="WPFSnake" Height="326" Width="339" Icon="/WpfSnake;component/Head.ico"
+        x:Name="_this"
+        >
+    <Window.Resources>
+        <Converter:SnakeGuidConverter x:Key="snakeGuidConverter"/>
+        <Style x:Key="dataGridCell" TargetType="DataGridCell">
+            <Setter Property="IsEnabled" Value="False"></Setter>
+            <Style.Triggers>
+                <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource snakeGuidConverter}">
+                            <Binding ElementName="_this" Path="CurrentSnakeGUID"></Binding>
+                            <Binding Path="SnakeGuid"></Binding>
+                        </MultiBinding>
+                    </DataTrigger.Binding>
+                    <Setter Property="IsEnabled" Value="True"></Setter>
+                    <Setter Property="IsEditing" Value="True"></Setter>
+                    <Setter Property="Foreground" Value="White"></Setter>
+                    <Setter Property="Background" Value="Black"></Setter>
+                </DataTrigger>
+
+
+                <!--<DataTrigger Binding="{Binding Converter={StaticResource snakeGuidConverter}, ConverterParameter=_this}" Value="True">
+                </DataTrigger>-->
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!--<Label Content="{Binding CurrentSnakeGUIDString, ElementName=MainWindow4}"/>-->
+        <Label Name="PauseLabel" Visibility="Hidden" Grid.Row="1" VerticalAlignment="center" HorizontalAlignment="Center" Background="Black" Foreground="White" FontWeight="UltraBold" FontSize="24">Hit Any key to Play</Label>
+        <!--<Viewbox Name="HighScoresViewBox" Grid.Row="1" VerticalAlignment="Top" Visibility="Hidden">
+            <Grid Height="Auto" Width="Auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="25*"></RowDefinition>
+                    <RowDefinition Height="25*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Content="HIGH SCORES" HorizontalAlignment="Center" FontSize="30" Grid.ColumnSpan="4" Padding="0,0,0,0"></Label>
+                <Button Name="BackToGameButton" Grid.Row="2" Content="Back to Game" Click="BackToGameButton_Click" />
+                <DataGrid Name="ScoresDataGrid" 
+                    AutoGenerateColumns="False" 
+                    Grid.Row="1" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" 
+                    ItemsSource="{Binding}"    
+                    CanUserAddRows="False" 
+                    CanUserDeleteRows="False" 
+                    CanUserReorderColumns="False" 
+                    CanUserResizeColumns="False"
+                    CanUserResizeRows="False"
+                    CanUserSortColumns="False"
+                    SelectionUnit="Cell"
+                    SelectionMode="Single"
+                >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding PlayerName}" >
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="IsEnabled" Value="False"></Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger  Binding="{Binding Path=Result, Converter={StaticResource SnakeGuidConverter}}" Value="true">
+                                            <Setter Property="IsEnabled" Value="True"></Setter>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                            <Setter Property="Background" Value="Black"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Score" Binding="{Binding PlayerScore}" IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True"></DataGridTextColumn>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+            </Grid>
+        </Viewbox>-->
+        <Viewbox Name="GameViewbox"  Grid.Row="1" Visibility="Visible" VerticalAlignment="Top">
+            <Grid Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Name="ScoreLabelLabel" Padding="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">Score:</Label>
+                <Label Grid.Column="1" Name="ScoreLabel" Padding="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">0000000</Label>
+                <Label Grid.Column="2" Name="HighScoreLabelLabel" Padding="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">High Score:</Label>
+                <Label Grid.Column="3" Name="HighScoreLabel" Padding="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">0000000</Label>
+                <Border Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="1" >
+                    <Grid Name="TargetGrid">
+                        <Grid Name="HighScoreGrid" Height="Auto" Width="Auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="25*"></RowDefinition>
+                            <RowDefinition Height="25*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                            <Label Content="HIGH SCORES" HorizontalAlignment="Center" FontSize="30" Grid.ColumnSpan="4" Padding="0,0,0,0"></Label>
+                            <!--<Label Content="{Binding ElementName=_this, Path=CurrentSnakeGUID}" HorizontalAlignment="Center" FontSize="30" Grid.ColumnSpan="4" Padding="0,0,0,0"></Label>-->
+                        <Button Name="BackToGameButton" Grid.Row="2" Content="Back to Game" Click="BackToGameButton_Click" />
+                            <DataGrid Name="ScoresDataGrid" 
+                                AutoGenerateColumns="False" 
+                                Grid.Row="1" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Top" 
+                                ItemsSource="{Binding}"    
+                                CanUserAddRows="False" 
+                                CanUserDeleteRows="False" 
+                                CanUserReorderColumns="False" 
+                                CanUserResizeColumns="False"
+                                CanUserResizeRows="False"
+                                CanUserSortColumns="False"
+                                SelectionUnit="Cell"
+                                SelectionMode="Single"
+                            >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding PlayerName}" CellStyle="{StaticResource dataGridCell}">
+                                        <!--<DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="IsEnabled" Value="False"></Setter>
+                                            <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=CurrentSnakeGUID,Converter=StaticResource snakeGuidConverter}" Value="true">
+                                        , ConverterParameter=CurrentSnakeGUID
+                                                        <Setter Property="IsEnabled" Value="True"></Setter>
+                                                        <Setter Property="Foreground" Value="White"></Setter>
+                                                        <Setter Property="Background" Value="Black"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>-->
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Score" Binding="{Binding PlayerScore}" IsReadOnly="True"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True"></DataGridTextColumn>
+                                    <!--<DataGridTextColumn Header="SnakeGuid" Binding="{Binding SnakeGuid}" IsReadOnly="True"></DataGridTextColumn>-->
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+            
+        </Viewbox>
+        </Grid>
+</Window>
