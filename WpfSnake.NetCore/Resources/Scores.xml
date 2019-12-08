@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfScore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Score>
+    <PlayerName>Player 1</PlayerName>
+    <PlayerScore>1000</PlayerScore>
+    <Date>2012-08-05T16:15:07.5260708-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Art DoooD</PlayerName>
+    <PlayerScore>900</PlayerScore>
+    <Date>2012-08-09T23:55:32.9736819-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player</PlayerName>
+    <PlayerScore>435</PlayerScore>
+    <Date>2012-08-14T21:05:41.2010795-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player</PlayerName>
+    <PlayerScore>382</PlayerScore>
+    <Date>2012-08-14T21:07:48.8412557-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player</PlayerName>
+    <PlayerScore>339</PlayerScore>
+    <Date>2012-08-14T21:09:31.7513988-04:00</Date>
+    <IsLastScoreMade>true</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player</PlayerName>
+    <PlayerScore>237</PlayerScore>
+    <Date>2012-08-14T21:06:57.1311843-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player</PlayerName>
+    <PlayerScore>130</PlayerScore>
+    <Date>2012-08-14T21:04:44.9210019-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player 1</PlayerName>
+    <PlayerScore>17</PlayerScore>
+    <Date>2012-08-11T00:49:04.8819364-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player 1</PlayerName>
+    <PlayerScore>8</PlayerScore>
+    <Date>2012-08-11T00:48:47.6579512-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+  <Score>
+    <PlayerName>Player 1</PlayerName>
+    <PlayerScore>8</PlayerScore>
+    <Date>2012-08-11T00:50:31.9519165-04:00</Date>
+    <IsLastScoreMade>false</IsLastScoreMade>
+  </Score>
+</ArrayOfScore>
